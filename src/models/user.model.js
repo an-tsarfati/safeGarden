@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
     },
+
     photo: {
       type: String,
       default: 'default.jpg',
@@ -63,6 +64,8 @@ const userSchema = new mongoose.Schema(
     alergies: {
       type: String,
     },
+    attended: [{ type: mongoose.Schema.ObjectId, ref: 'Attendance' }],
+    chat: [{ type: mongoose.Schema.ObjectId, ref: 'Chat' }],
   },
   {
     timestamps: true,

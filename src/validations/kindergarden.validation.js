@@ -11,6 +11,15 @@ const kindergardenValidationSchema = Joi.object({
   kindergardenWorkHours: Joi.string().required().messages({
     'any.required': 'Please enter the working hours',
   }),
+  director: Joi.array().items(
+    Joi.string()
+      .pattern(/^[0-9a-fA-F]{24}$/)
+      .required()
+      .messages({
+        'any.required': 'Director ID is required',
+        'string.pattern.base': 'Invalid Director ID',
+      })
+  ),
 });
 
 module.exports = kindergardenValidationSchema;

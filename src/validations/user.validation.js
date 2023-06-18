@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const mongoose = require('mongoose');
 
 const userValidationSchema = Joi.object({
   role: Joi.string()
@@ -63,6 +64,8 @@ const userValidationSchema = Joi.object({
       otherwise: Joi.string().optional(),
     }),
   allergies: Joi.string().optional(),
+  attended: [{ type: mongoose.Schema.ObjectId, ref: 'Attendance' }],
+  chat: [{ type: mongoose.Schema.ObjectId, ref: 'Chat' }],
 }).options({ abortEarly: false });
 
 module.exports = userValidationSchema;

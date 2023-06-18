@@ -21,16 +21,19 @@ const chatSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    kindergardenWorkHours: {
-      type: String,
-      required: true,
-    },
   },
   {
     timestamp: {
       type: Date,
       default: Date.now,
     },
+    kindergarden: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Kindergarden',
+        required: true,
+      },
+    ],
   }
 );
 

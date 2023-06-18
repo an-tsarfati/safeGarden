@@ -21,6 +21,7 @@ const kindergardenSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  director: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
 });
 
 const KindergardenModel = mongoose.model('Kindergarden', kindergardenSchema);
