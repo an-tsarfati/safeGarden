@@ -24,6 +24,22 @@ const kindergardenSchema = new mongoose.Schema({
   director: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
 });
 
+kindergardenSchema.pre('save', async function (next) {
+  try {
+    await kindergardenValidation.validateAsync(this);
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+kindergardenSchema.pre(/^find/, function (next) {
+  this.populate({ path: 'director', select: '-__v -passwordChangedAt' });
+
+  next();
+});
+
+
 const KindergardenModel = mongoose.model('Kindergarden', kindergardenSchema);
 
 module.exports = {

@@ -8,6 +8,8 @@ const catchAsync = require('./../utils/catchAsync');
 const updateAttendance = catchAsync(async (req, res) => {
   const { role, kindergartenId, kidId, timestamp, status } = req.body;
 
+
+  // move to validation file!!!!!!!!!!!!!!!
   // Check if the user is a parent
   if (role === 'parent') {
     // Only allow updating 'arrived' status

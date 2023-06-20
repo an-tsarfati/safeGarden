@@ -8,9 +8,9 @@ const router = express.Router();
 
 router.get('/statusCheck', (_, res) => res.status(200).json({ status: 'OK' }));
 
-router.use('/api/users', user);
-router.use('/api/kindergarden/', kindergarden);
+router.use('/users', user);
+router.use('/kindergarden/', kindergarden);
 router.use('/', attendance);
-router.use('/api/messages', chat);
+router.use('/messages', chat);
 
 module.exports = router;

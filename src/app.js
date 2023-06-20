@@ -73,7 +73,7 @@ app.use(bodyParser.urlencoded({ limit: '15mb', extended: true }));
 app.listen(port, async () => {
   console.log(`App is running at ${protocol}://${host}:${port}`);
   await connect();
-  app.use(router);
+  app.use('/api', router);
 });
 
 app.locals.io = wss;
