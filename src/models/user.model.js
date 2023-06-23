@@ -67,7 +67,6 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     attended: [{ type: mongoose.Schema.ObjectId, ref: 'Attendance' }],
-    chat: [{ type: mongoose.Schema.ObjectId, ref: 'Chat' }],
   },
   {
     timestamps: true,
@@ -135,6 +134,6 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
-const userModel = mongoose.model('users', userSchema);
+const UserModel = mongoose.model('users', userSchema);
 
-module.exports = { userModel, userValidationSchema };
+module.exports = { UserModel, userValidationSchema };

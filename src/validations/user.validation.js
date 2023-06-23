@@ -1,5 +1,4 @@
 const Joi = require('joi');
-const mongoose = require('mongoose');
 
 const userValidationSchema = Joi.object({
   role: Joi.string()
@@ -34,20 +33,16 @@ const userValidationSchema = Joi.object({
   }),
   passwordConfirm: Joi.string().required().valid(Joi.ref('password')).messages({
     'any.required': 'Please confirm your password',
-    'any.only': 'Passwords are not the same!',
+    'any.only': 'Passwords do not match!',
   }),
-  passwordChangedAt: Joi.date(),
-  passwordResetToken: Joi.string(),
-  passwordResetExpires: Joi.date(),
-  active: Joi.boolean().default(true),
-  kindId: Joi.number().when('role', {
+  kidId: Joi.number().when('role', {
     is: 'parent',
     then: Joi.number().required().messages({
       'any.required': 'You have to enter ID for the kid!',
     }),
     otherwise: Joi.number().optional(),
   }),
-  kindFirstName: Joi.string().when('role', {
+  kidFirstName: Joi.string().when('role', {
     is: 'parent',
     then: Joi.string().required().messages({
       'any.required': 'You have to enter the kid name!',
@@ -63,9 +58,13 @@ const userValidationSchema = Joi.object({
       }),
       otherwise: Joi.string().optional(),
     }),
-  allergies: Joi.string().optional(),
-  attended: [{ type: mongoose.Schema.ObjectId, ref: 'Attendance' }],
-  chat: [{ type: mongoose.Schema.ObjectId, ref: 'Chat' }],
+  allergies: Joi.string().optional().allow(''),
+  attended: Joi.array().items(Joi.string()).messages({
+    'array.base': 'The attended field must be an array of strings',
+  }),
+  chat: Joi.array().items(Joi.string()).messages({
+    'array.base': 'The chat field must be an array of strings',
+  }),
 }).options({ abortEarly: false });
 
 module.exports = userValidationSchema;

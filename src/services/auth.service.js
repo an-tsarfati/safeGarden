@@ -1,15 +1,23 @@
-const UserModel = require('../models/user.model');
+const { UserModel } = require('../models/user.model');
 
 async function createUser(input) {
-  return UserModel.create(input);
+  try {
+    const newUser = new UserModel(input);
+    const createdUser = await newUser.save();
+    return createdUser;
+  } catch (error) {
+    // Handle the error appropriately
+    throw error;
+  }
 }
 
-async function findUser(query, options = { lean: true }) {
-  return UserModel.findOne(query, {}, options);
-}
+const findUser = async (filter) => {
+  const user = await UserModel.findOne(filter).select('+password').exec();
+  return user;
+};
 
 async function getUser(query) {
-  return await UserModel.findById();
+  return await UserModel.findById(query);
 }
 
 module.exports = {

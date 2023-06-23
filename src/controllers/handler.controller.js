@@ -44,12 +44,18 @@ exports.updateOne = (Model) =>
 
 exports.createOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    const doc = await createKindergardenClass(req.body);
+    const kindergarden = await createKindergardenClass({
+      kindergardenName: req.body.kindergardenName,
+      kindergardenAddress: req.body.kindergardenAddress,
+      kindergardenAuthority: req.body.kindergardenAuthority,
+      kindergardenClasses: req.body.kindergardenClasses,
+      kindergardenWorkHours: req.body.kindergardenWorkHours,
+    });
 
     res.status(201).json({
       status: 'success',
       data: {
-        data: doc,
+        data: kindergarden,
       },
     });
   });

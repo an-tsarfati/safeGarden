@@ -29,7 +29,8 @@ const {
 
 const router = express.Router();
 
-router.post('/signup', validate(userValidationSchema), signup);
+router.post('/signup', signup);
+// , validate(userValidationSchema)
 router.post('/login', login);
 router.get('/logout', logout);
 
