@@ -1,21 +1,25 @@
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const APIFeatures = require('./../utils/apiFeatures');
-const {
-  createKindergardenClass,
-  findAndUpdateKindergardenClass,
-  deleteKindergardenClass,
-  getAllKindergardenClasses,
-  getClass,
-} = require('../services/kindergarden.service');
+
+const mongoose = require('mongoose');
+// const {
+//   createOne,
+//   deleteOne,
+//   getAll,
+//   getOne,
+//   updateOne,
+// } = require('../services/hendler.service');
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    const doc = await deleteKindergardenClass(req.params.id);
+    const doc = await Model.findById(req.params.id);
 
     if (!doc) {
       return next(new AppError('No document found with that ID', 404));
     }
+
+    await Model.findByIdAndDelete(req.params.id);
 
     res.status(204).json({
       status: 'success',
@@ -25,7 +29,7 @@ exports.deleteOne = (Model) =>
 
 exports.updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    const doc = await findAndUpdateKindergardenClass(req.params.id, req.body, {
+    const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
@@ -42,27 +46,16 @@ exports.updateOne = (Model) =>
     });
   });
 
-exports.createOne = (Model) =>
-  catchAsync(async (req, res, next) => {
-    const kindergarden = await createKindergardenClass({
-      kindergardenName: req.body.kindergardenName,
-      kindergardenAddress: req.body.kindergardenAddress,
-      kindergardenAuthority: req.body.kindergardenAuthority,
-      kindergardenClasses: req.body.kindergardenClasses,
-      kindergardenWorkHours: req.body.kindergardenWorkHours,
-    });
-
-    res.status(201).json({
-      status: 'success',
-      data: {
-        data: kindergarden,
-      },
-    });
+exports.createUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not defined! Please use /signup instead',
   });
+};
 
 exports.getOne = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
-    let query = getClass(req.params.id);
+    let query = M.findById(req.params.id);
     if (popOptions) query = query.populate(popOptions);
     const doc = await query;
 
@@ -85,7 +78,7 @@ exports.getAll = (Model) =>
     if (req.params.kindergardenClassId)
       filter = { kindergardenClass: req.params.kindergardenClassId };
 
-    const features = new APIFeatures(getAllKindergardenClasses, req.query)
+    const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
       .sort()
       .limitFields()
