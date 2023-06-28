@@ -40,21 +40,7 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const newUser = await createUser({
-    role: req.body.role,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    phone: req.body.phone,
-    address: req.body.address,
-    kindergardenName: req.body.kindergardenName,
-    email: req.body.email,
-    password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
-    kidId: req.body.kidId,
-    kidFirstName: req.body.kidFirstName,
-    HMO: req.body.HMO,
-    alergies: req.body.alergies,
-  });
+  const newUser = await createUser(req.body);
 
   createSendToken(newUser, 201, res);
 });
@@ -180,28 +166,6 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 2) Generate the random reset token
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
-
-  // // 3) Send it to user's email
-  // try {
-  //   const resetURL = `${req.protocol}://${req.get(
-  //     'host'
-  //   )}/api/v1/users/resetPassword/${resetToken}`;
-  //   await new Email(user, resetURL).sendPasswordReset();
-
-  //   res.status(200).json({
-  //     status: 'success',
-  //     message: 'Token sent to email!',
-  //   });
-  // } catch (err) {
-  //   user.passwordResetToken = undefined;
-  //   user.passwordResetExpires = undefined;
-  //   await user.save({ validateBeforeSave: false });
-
-  //   return next(
-  //     new AppError('There was an error sending the email. Try again later!'),
-  //     500
-  //   );
-  // }
 });
 
 exports.resetPassword = catchAsync(async (req, res, next) => {

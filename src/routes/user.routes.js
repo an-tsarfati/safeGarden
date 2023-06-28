@@ -3,7 +3,6 @@ const userValidationSchema = require('../validations/user.validation');
 const validate = require('../middleware/validateResource');
 
 const {
-  createUser,
   deleteMe,
   deleteUser,
   getAllUsers,
@@ -29,8 +28,8 @@ const {
 
 const router = express.Router();
 
-router.post('/signup', signup);
-// , validate(userValidationSchema)
+router.post('/signup', validate(userValidationSchema), signup);
+
 router.post('/login', login);
 router.get('/logout', logout);
 
@@ -48,7 +47,7 @@ router.delete('/deleteMe', deleteMe);
 
 // router.use(restrictTo('admin'));
 
-router.route('/').get(getAllUsers).post(createUser);
+router.route('/').get(getAllUsers);
 
 router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 

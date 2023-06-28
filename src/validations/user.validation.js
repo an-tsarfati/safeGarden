@@ -1,70 +1,77 @@
 const Joi = require('joi');
 
 const userValidationSchema = Joi.object({
-  role: Joi.string()
-    .valid('director', 'assistant', 'parent')
-    .required()
-    .messages({
-      'any.only':
-        'You can choose only one of the following roles: director, user, assistant, parent',
-      'any.required': 'Role is required',
+  body: Joi.object({
+    role: Joi.string()
+      .valid('director', 'assistant', 'parent')
+      .required()
+      .messages({
+        'any.only':
+          'You can choose only one of the following roles: director, user, assistant, parent',
+        'any.required': 'Role is required',
+      }),
+    firstName: Joi.string().required().messages({
+      'any.required': 'Please enter your first name',
     }),
-  firstName: Joi.string().required().messages({
-    'any.required': 'Please enter your first name',
-  }),
-  lastName: Joi.string().required().messages({
-    'any.required': 'Please enter your last name',
-  }),
-  phone: Joi.number().required().messages({
-    'any.required': 'Please enter your phone number',
-  }),
-  address: Joi.string().required().messages({
-    'any.required': 'Please enter your address',
-  }),
-  email: Joi.string().required().email().messages({
-    'any.required': 'Please provide your email',
-    'string.email': 'Please provide a valid email',
-  }),
-  photo: Joi.string().default('default.jpg'),
+    lastName: Joi.string().required().messages({
+      'any.required': 'Please enter your last name',
+    }),
+    phone: Joi.number().required().messages({
+      'any.required': 'Please enter your phone number',
+    }),
+    address: Joi.string().required().messages({
+      'any.required': 'Please enter your address',
+    }),
+    email: Joi.string().required().email().messages({
+      'any.required': 'Please provide your email',
+      'string.email': 'Please provide a valid email',
+    }),
+    photo: Joi.string().default('default.jpg'),
 
-  password: Joi.string().required().min(8).messages({
-    'any.required': 'Please provide a password',
-    'string.min': 'Password must be at least 8 characters long',
-  }),
-  passwordConfirm: Joi.string().required().valid(Joi.ref('password')).messages({
-    'any.required': 'Please confirm your password',
-    'any.only': 'Passwords do not match!',
-  }),
-  kidId: Joi.number().when('role', {
-    is: 'parent',
-    then: Joi.number().required().messages({
-      'any.required': 'You have to enter ID for the kid!',
+    password: Joi.string().required().min(8).messages({
+      'any.required': 'Please provide a password',
+      'string.min': 'Password must be at least 8 characters long',
     }),
-    otherwise: Joi.number().optional(),
-  }),
-  kidFirstName: Joi.string().when('role', {
-    is: 'parent',
-    then: Joi.string().required().messages({
-      'any.required': 'You have to enter the kid name!',
+    passwordConfirm: Joi.string()
+      .required()
+      .valid(Joi.ref('password'))
+      .messages({
+        'any.required': 'Please confirm your password',
+        'any.only': 'Passwords do not match!',
+      }),
+    kidId: Joi.number().when('role', {
+      is: 'parent',
+      then: Joi.number().required().messages({
+        'any.required': 'You have to enter ID for the kid!',
+      }),
+      otherwise: Joi.number().optional(),
     }),
-    otherwise: Joi.string().optional(),
-  }),
-  HMO: Joi.string()
-    .valid('Clalit', 'Maccabi', 'Meuhedet', 'Leumit')
-    .when('role', {
+    kidFirstName: Joi.string().when('role', {
       is: 'parent',
       then: Joi.string().required().messages({
-        'any.required': 'You have to enter an HMO!',
+        'any.required': 'You have to enter the kid name!',
       }),
       otherwise: Joi.string().optional(),
     }),
-  allergies: Joi.string().optional().allow(''),
-  attended: Joi.array().items(Joi.string()).messages({
-    'array.base': 'The attended field must be an array of strings',
-  }),
-  chat: Joi.array().items(Joi.string()).messages({
-    'array.base': 'The chat field must be an array of strings',
-  }),
-}).options({ abortEarly: false });
+    HMO: Joi.string()
+      .valid('Clalit', 'Maccabi', 'Meuhedet', 'Leumit')
+      .when('role', {
+        is: 'parent',
+        then: Joi.string().required().messages({
+          'any.required': 'You have to enter an HMO!',
+        }),
+        otherwise: Joi.string().optional(),
+      }),
+    alergies: Joi.string().optional(),
+    attended: Joi.array().items(Joi.string()).messages({
+      'array.base': 'The attended field must be an array of strings',
+    }),
+    chat: Joi.array().items(Joi.string()).messages({
+      'array.base': 'The chat field must be an array of strings',
+    }),
+  }).options({ abortEarly: false }),
+  query: Joi.allow(''),
+  params: Joi.allow(''),
+});
 
 module.exports = userValidationSchema;
