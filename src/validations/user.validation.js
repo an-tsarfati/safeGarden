@@ -28,9 +28,8 @@ const userValidationSchema = Joi.object({
     }),
     photo: Joi.string().default('default.jpg'),
 
-    password: Joi.string().required().min(8).messages({
+    password: Joi.string().required().messages({
       'any.required': 'Please provide a password',
-      'string.min': 'Password must be at least 8 characters long',
     }),
     passwordConfirm: Joi.string()
       .required()
@@ -39,36 +38,6 @@ const userValidationSchema = Joi.object({
         'any.required': 'Please confirm your password',
         'any.only': 'Passwords do not match!',
       }),
-    kidId: Joi.number().when('role', {
-      is: 'parent',
-      then: Joi.number().required().messages({
-        'any.required': 'You have to enter ID for the kid!',
-      }),
-      otherwise: Joi.number().optional(),
-    }),
-    kidFirstName: Joi.string().when('role', {
-      is: 'parent',
-      then: Joi.string().required().messages({
-        'any.required': 'You have to enter the kid name!',
-      }),
-      otherwise: Joi.string().optional(),
-    }),
-    HMO: Joi.string()
-      .valid('Clalit', 'Maccabi', 'Meuhedet', 'Leumit')
-      .when('role', {
-        is: 'parent',
-        then: Joi.string().required().messages({
-          'any.required': 'You have to enter an HMO!',
-        }),
-        otherwise: Joi.string().optional(),
-      }),
-    alergies: Joi.string().optional(),
-    attended: Joi.array().items(Joi.string()).messages({
-      'array.base': 'The attended field must be an array of strings',
-    }),
-    chat: Joi.array().items(Joi.string()).messages({
-      'array.base': 'The chat field must be an array of strings',
-    }),
   }).options({ abortEarly: false }),
   query: Joi.allow(''),
   params: Joi.allow(''),

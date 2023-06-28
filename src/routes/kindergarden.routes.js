@@ -1,11 +1,10 @@
 const express = require('express');
 const validate = require('../middleware/validateResource');
 const {
-  createKindergardenClass,
-  deleteKindergardenClass,
-  getAllKindergardenClasss,
-  getKindergardenClass,
-  updateKindergardenClass,
+  deleteKindergarden,
+  getKindergarden,
+  newKindergarden,
+  updateKindergarden,
 } = require('./../controllers/kindergarden.controller');
 const { restrictTo, protect } = require('./../controllers/auth.controller');
 const kindergardenValidationSchema = require('../validations/kindergarden.validation');
@@ -25,23 +24,22 @@ router.get('/api/:kindergarden/attendance', attendance);
 
 router
   .route('/api/kindergarden/')
-  .get(getAllKindergardenClasss)
   .post(
     [validate(kindergardenValidationSchema), protect, restrictTo('director')],
-    createKindergardenClass
+    newKindergarden
   );
 
 router
   .route('/api/kindergarden/:id')
-  .get(getKindergardenClass)
+  .get(getKindergarden)
   .patch(
     protect,
     restrictTo('director'),
     uploadKindergardenClassImages,
     uploadImages,
     resizeImages('kindergarden'),
-    updateKindergardenClass
+    updateKindergarden
   )
-  .delete(protect, restrictTo('director'), deleteKindergardenClass);
+  .delete(protect, restrictTo('director'), deleteKindergarden);
 
 module.exports = router;

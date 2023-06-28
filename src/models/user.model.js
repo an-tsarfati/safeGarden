@@ -43,30 +43,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    kidId: {
-      type: Number,
-      required: function () {
-        return this.role === 'parent';
-      },
-      unique: true,
-    },
-    kidFirstName: {
-      type: String,
-      required: function () {
-        return this.role === 'parent';
-      },
-    },
-    HMO: {
-      type: String,
-      required: function () {
-        return this.role === 'parent';
-      },
-      enum: ['Clalit', 'Maccabi', 'Meuhedet', 'Leumit'],
-    },
-    alergies: {
-      type: String,
-    },
-    attended: [{ type: mongoose.Schema.ObjectId, ref: 'Attendance' }],
   },
   {
     timestamps: true,
@@ -126,6 +102,8 @@ userSchema.methods.createPasswordResetToken = function () {
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
+
+  console.log({ resetToken }, this.passwordResetToken);
 
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
