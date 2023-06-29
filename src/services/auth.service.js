@@ -4,12 +4,16 @@ async function createUser(input) {
   return await UserModel.create(input);
 }
 
-const findUser = async (filter) => {
-  const user = await UserModel.findOne(filter).select('+password').exec();
-  return user;
-};
+async function findUser(filter) {
+  return await UserModel.findOne(filter).select('+password').exec();
+}
+
+async function getUser(query) {
+  return await UserModel.findById(query);
+}
 
 module.exports = {
   createUser,
   findUser,
+  getUser,
 };

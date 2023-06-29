@@ -7,10 +7,16 @@ async function deleteKindergarden(query) {
   return KindergardenModel.deleteOne(query).lean();
 }
 
-async function readKindergarden(query) {
-  return await KindergardenModel.findById(query);
+async function readKindergarden(id) {
+  const doc = await KindergardenModel.findById(id).populate({
+    path: 'director',
+    select: '-__v -passwordChangedAt',
+  });
+
+  return doc;
 }
-async function creatKindergarden(input) {
+
+async function createKindergarden(input) {
   return await KindergardenModel.create(input);
 }
 

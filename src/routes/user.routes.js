@@ -8,7 +8,6 @@ const {
   getAllUsers,
   getMe,
   getUser,
-  updateMe,
   updateUser,
 } = require('./../controllers/user.controller');
 const {
@@ -40,13 +39,12 @@ router.patch('/resetPassword/:token', resetPassword);
 router.use(protect);
 
 router.patch('/updateMyPassword', updatePassword);
-router.get('/me', getMe, getUser);
-router.patch('/updateMe', uploadImages, resizeImages('user'), updateMe);
+router.patch('/updateMe', uploadImages, resizeImages('user'), updateUser);
 
 router.delete('/deleteMe', deleteMe);
 
 // router.use(restrictTo('admin'));
-
+console.log(getAllUsers);
 router.route('/').get(getAllUsers);
 
 router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);

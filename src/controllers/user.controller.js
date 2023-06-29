@@ -1,5 +1,6 @@
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
+const APIFeatures = require('../utils/apiFeatures');
 const {
   findAndUpdateUser,
   deleteOneUser,
@@ -15,12 +16,7 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-exports.getMe = (req, res, next) => {
-  req.params.id = req.user.id;
-  next();
-};
-
-exports.updateMe = catchAsync(async (req, res, next) => {
+exports.updateUser = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {
     return next(
@@ -67,60 +63,31 @@ exports.deleteUser = catchAsync(async (req, res) => {
 
 exports.getUser = (popOptions) =>
   catchAsync(async (req, res, next) => {
-    let query = readUser(req.params.id);
-    if (popOptions) query = query.populate(popOptions);
-    const doc = await query;
+    const user = await readUser(req.params.id, popOptions);
 
-    if (!doc) {
+    if (!user) {
       return next(new AppError('No document found with that ID', 404));
     }
 
     res.status(200).json({
       status: 'success',
       data: {
-        data: doc,
+        data: user,
       },
     });
   });
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
-  // To allow for nested GET reviews on kindergardenClass (hack)
   let filter = {};
-  if (req.params.kindergardenClassId)
-    filter = { kindergardenClass: req.params.kindergardenClassId };
+  if (req.params.userId) filter = { user: req.params.userId };
 
-  const features = new APIFeatures(readAllUsers, req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-  const doc = await features.query;
-
-  // SEND RESPONSE
-  res.status(200).json({
-    status: 'success',
-    results: doc.length,
-    data: {
-      data: doc,
-    },
-  });
-});
-
-// Do NOT update passwords with this!
-exports.updateUser = catchAsync(async (req, res, next) => {
-  const doc = await findAndUpdateUser(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!doc) {
-    return next(new AppError('No document found with that ID', 404));
-  }
+  const users = await readAllUsers(filter, req.query);
 
   res.status(200).json({
     status: 'success',
+    results: users.length,
     data: {
-      data: doc,
+      data: users,
     },
   });
 });

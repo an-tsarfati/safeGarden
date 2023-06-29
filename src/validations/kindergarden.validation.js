@@ -8,10 +8,13 @@ const kindergardenValidationSchema = Joi.object({
     kindergardenAddress: Joi.string().required().messages({
       'any.required': 'Please enter the adress',
     }),
-    kindergardenClasses: Joi.string(),
     kindergardenWorkHours: Joi.string().required().messages({
       'any.required': 'Please enter the working hours',
     }),
+    kindergardenAuthority: Joi.string().required().messages({
+      'any.required': 'Please enter the Authority',
+    }),
+    photo: Joi.string().default('default.jpg'),
     director: Joi.array().items(
       Joi.string()
         .pattern(/^[0-9a-fA-F]{24}$/)

@@ -2,8 +2,8 @@ const validate = (schema) => {
   return (req, res, next) => {
     const { error } = schema.validate({
       body: req.body,
-      query: req.query || undefined,
-      params: req.params || undefined,
+      query: req.query,
+      params: req.params,
     });
 
     if (error) {
