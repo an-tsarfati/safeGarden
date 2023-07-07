@@ -9,22 +9,21 @@ async function deleteOneUser(query) {
 }
 
 async function readAllUsers(filter, query) {
-  const mongoQuery = UserModel.find(filter); // Create a valid MongoDB query object using the User model
-
-  const features = new APIFeatures(mongoQuery, query)
+  const features = new APIFeatures(UserModel.find(filter), query)
     .filter()
     .sort()
     .limitFields()
     .paginate();
 
-  const users = await features.query;
-  return users;
+  const doc = await features.query;
+
+  return doc;
 }
 
-async function readUser(id, popOptions) {
-  let query = User.findById(id);
+async function readUser(userId, popOptions) {
+  let query = UserModel.findById(userId);
   if (popOptions) query = query.populate(popOptions);
-  const user = await query;
+  const user = await query.exec();
 
   return user;
 }

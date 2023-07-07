@@ -40,6 +40,6 @@ const childSchema = new mongoose.Schema(
   }
 );
 
-const ChildModel = mongoose.model('children', childSchema);
+const ChildModel = mongoose.model('Child', childSchema);
 
 module.exports = { ChildModel, childValidationSchema };

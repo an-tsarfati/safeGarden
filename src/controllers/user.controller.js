@@ -1,6 +1,6 @@
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
-const APIFeatures = require('../utils/apiFeatures');
+
 const {
   findAndUpdateUser,
   deleteOneUser,
@@ -61,33 +61,35 @@ exports.deleteUser = catchAsync(async (req, res) => {
   res.status(200).json('user deleted');
 });
 
-exports.getUser = (popOptions) =>
-  catchAsync(async (req, res, next) => {
-    const user = await readUser(req.params.id, popOptions);
+exports.getUser = catchAsync(async (req, res, next) => {
+  const userId = req.params.id;
+  const popOptions = req.query.populate;
 
-    if (!user) {
-      return next(new AppError('No document found with that ID', 404));
-    }
+  const user = await readUser(userId, popOptions);
 
-    res.status(200).json({
-      status: 'success',
-      data: {
-        data: user,
-      },
-    });
+  if (!user) {
+    return next(new AppError('No user found with that ID', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user,
+    },
   });
+});
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   let filter = {};
   if (req.params.userId) filter = { user: req.params.userId };
 
-  const users = await readAllUsers(filter, req.query);
+  const doc = await readAllUsers(filter, req.query);
 
   res.status(200).json({
     status: 'success',
-    results: users.length,
+    results: doc.length,
     data: {
-      data: users,
+      data: doc,
     },
   });
 });
