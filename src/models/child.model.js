@@ -34,6 +34,7 @@ const childSchema = new mongoose.Schema(
     },
     attended: [{ type: mongoose.Schema.ObjectId, ref: 'Attendance' }],
     parent: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    kindergarten: [{ type: mongoose.Schema.ObjectId, ref: 'Kindergarden' }],
   },
   {
     timestamps: true,

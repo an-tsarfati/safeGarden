@@ -23,17 +23,9 @@ const kindergardenSchema = new mongoose.Schema({
     type: String,
     default: 'default.jpg',
   },
-  director: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  staff: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  children: [{ type: mongoose.Schema.ObjectId, ref: 'Child' }],
 });
-
-// kindergardenSchema.pre('save', async function (next) {
-//   try {
-//     await kindergardenValidationSchema.validateAsync(this);
-//     next();
-//   } catch (err) {
-//     next(err);
-//   }
-// });
 
 kindergardenSchema.pre(/^find/, function (next) {
   this.populate({ path: 'director', model: UserModel }); // Use UserModel as the reference
