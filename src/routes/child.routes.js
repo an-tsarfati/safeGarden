@@ -1,5 +1,5 @@
 const express = require('express');
-const userValidationSchema = require('../validations/user.validation');
+const childValidationSchema = require('../validations/child.validation');
 const validate = require('../middleware/validateResource');
 
 const {
@@ -9,7 +9,7 @@ const {
   newChild,
   updateChild,
 } = require('./../controllers/child.controller');
-const { protect, restrictTo } = require('./../controllers/auth.controller');
+// const { protect, restrictTo } = require('./../controllers/auth.controller');
 const {
   uploadImages,
   resizeImages,
@@ -17,7 +17,7 @@ const {
 
 const router = express.Router();
 
-router.post('/addChild', validate(userValidationSchema), newChild);
+router.post('/addChild', validate(childValidationSchema), newChild);
 
 // Protect all routes after this middleware
 // router.use(protect);

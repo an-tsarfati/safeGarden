@@ -32,9 +32,9 @@ const childSchema = new mongoose.Schema(
     alergies: {
       type: String,
     },
-    attended: [{ type: mongoose.Schema.ObjectId, ref: 'Attendance' }],
-    parent: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-    kindergarten: [{ type: mongoose.Schema.ObjectId, ref: 'Kindergarden' }],
+    // attended: [{ type: mongoose.Schema.ObjectId, ref: 'Attendance' }],
+    // parent: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    // kindergarten: [{ type: mongoose.Schema.ObjectId, ref: 'Kindergarden' }],
   },
   {
     timestamps: true,

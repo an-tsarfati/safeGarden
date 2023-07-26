@@ -13,9 +13,9 @@ const {
   forgotPassword,
   login,
   logout,
-  protect,
+  // protect,
   resetPassword,
-  restrictTo,
+  // restrictTo,
   signup,
   updatePassword,
 } = require('./../controllers/auth.controller');
@@ -36,7 +36,7 @@ router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', resetPassword);
 
 // Protect all routes after this middleware
-router.use(protect);
+// router.use(protect);
 
 router.patch('/updateMyPassword', updatePassword);
 router.patch('/updateMe', uploadImages, resizeImages('user'), updateUser);

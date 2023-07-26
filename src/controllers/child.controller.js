@@ -11,7 +11,12 @@ const AppError = require('./../utils/appError');
 exports.newChild = catchAsync(async (req, res, next) => {
   const newUser = await creatChild(req.body);
 
-  createSendToken(newUser, 201, res);
+  res.status(201).json({
+    status: 'success',
+    data: {
+      data: newUser,
+    },
+  });
 });
 
 exports.deleteChild = catchAsync(async (req, res) => {

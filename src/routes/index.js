@@ -3,7 +3,6 @@ const user = require('./user.routes');
 const kindergarden = require('./kindergarden.routes');
 const attendance = require('./attendance.routes');
 const child = require('./child.routes');
-// const calendar = require('./googleCalendar.routes');
 
 const router = express.Router();
 
@@ -13,6 +12,5 @@ router.use('/users', user);
 router.use('/kindergarden', kindergarden);
 router.use('/', attendance);
 router.use('/child', child);
-// router.use('/', calendar);
 
 module.exports = router;

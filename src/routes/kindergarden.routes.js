@@ -7,7 +7,7 @@ const {
   newKindergarden,
   updateKindergarden,
 } = require('./../controllers/kindergarden.controller');
-const { restrictTo, protect } = require('./../controllers/auth.controller');
+// const { restrictTo, protect } = require('./../controllers/auth.controller');
 const {
   uploadImages,
   resizeImages,
@@ -20,16 +20,15 @@ router
   .route('/register')
   .post(validate(kindergardenValidationSchema), newKindergarden);
 
-router
-  .route('/:id')
-  .get(getKindergarden)
-  .patch(updateKindergarden)
-  .delete(protect, restrictTo('director'), deleteKindergarden);
+router.route('/:id').get(getKindergarden).patch(updateKindergarden).delete(
+  // protect, restrictTo('director'),
+  deleteKindergarden
+);
 
 router.patch(
   '/uploadImg/:id',
-  protect,
-  restrictTo('director'),
+  // protect,
+  // restrictTo('director'),
   uploadImages,
   resizeImages('kindergarden')
 );
