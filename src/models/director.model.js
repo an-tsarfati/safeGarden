@@ -1,14 +1,11 @@
-// const mongoose = require('mongoose');
-// const userValidationSchema = require('../validations/user.validation');
-// const { UserModel } = require('./user.model');
+const mongoose = require('mongoose');
+const { userSchema } = require('./user.model');
+const extendSchema = require('mongoose-extend-schema');
 
-// const directorSchema = new mongoose.Schema({
-//   parentDetails: {
-//     type: UserModel,
-//   },
-//   // child: [{ type: mongoose.Schema.ObjectId, ref: 'Child' }],
-//   // kindergarten: [{ type: mongoose.Schema.ObjectId, ref: 'Kindergarden' }],
-// });
-// const DirectorModel = mongoose.model('Parent', directorSchema);
+const directorSchema = extendSchema(userSchema, {
+  kindergarden: [{ type: mongoose.Schema.ObjectId, ref: 'Kindergarden' }],
+});
 
-// module.exports = { DirectorModel, userValidationSchema };
+const DirectorModel = mongoose.model('Director', directorSchema);
+
+module.exports = { DirectorModel };

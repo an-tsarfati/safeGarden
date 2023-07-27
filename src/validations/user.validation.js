@@ -2,14 +2,11 @@ const Joi = require('joi');
 
 const userValidationSchema = Joi.object({
   body: Joi.object({
-    role: Joi.string()
-      .valid('director', 'assistant', 'parent')
-      .required()
-      .messages({
-        'any.only':
-          'You can choose only one of the following roles: director, user, assistant, parent',
-        'any.required': 'Role is required',
-      }),
+    role: Joi.string().valid('director', 'parent').required().messages({
+      'any.only':
+        'You can choose only one of the following roles: director, user, assistant, parent',
+      'any.required': 'Role is required',
+    }),
     firstName: Joi.string().required().messages({
       'any.required': 'Please enter your first name',
     }),
@@ -27,7 +24,6 @@ const userValidationSchema = Joi.object({
       'string.email': 'Please provide a valid email',
     }),
     photo: Joi.string().default('default.jpg'),
-
     password: Joi.string().required().messages({
       'any.required': 'Please provide a password',
     }),

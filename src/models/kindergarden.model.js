@@ -24,7 +24,7 @@ const kindergardenSchema = new mongoose.Schema({
     default: 'default.jpg',
   },
   // staff: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-  // children: [{ type: mongoose.Schema.ObjectId, ref: 'Child' }],
+  children: [{ type: mongoose.Schema.ObjectId, ref: 'Child' }],
 });
 
 kindergardenSchema.pre(/^find/, function (next) {

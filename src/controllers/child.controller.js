@@ -60,19 +60,34 @@ exports.updateChild = catchAsync(async (req, res, next) => {
   });
 });
 
+// exports.getAllchildren = catchAsync(async (req, res, next) => {
+//   let filter = {};
+//   if (req.params.childClassId)
+//     filter = { childClassId: req.params.childClassId };
+
+//   const features = new APIFeatures(readAllChildren, req.query)
+//     .filter()
+//     .sort()
+//     .limitFields()
+//     .paginate();
+//   const doc = await features.query;
+
+//   // SEND RESPONSE
+//   res.status(200).json({
+//     status: 'success',
+//     results: doc.length,
+//     data: {
+//       data: doc,
+//     },
+//   });
+// });
+
 exports.getAllchildren = catchAsync(async (req, res, next) => {
   let filter = {};
-  if (req.params.childClassId)
-    filter = { childClassId: req.params.childClassId };
+  if (req.params.childId) filter = { child: req.params.childId };
 
-  const features = new APIFeatures(readAllChildren, req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-  const doc = await features.query;
+  const doc = await readAllChildren(filter, req.query);
 
-  // SEND RESPONSE
   res.status(200).json({
     status: 'success',
     results: doc.length,

@@ -2,12 +2,13 @@ const mongoose = require('mongoose');
 const userValidationSchema = require('../validations/user.validation');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = new mongoose.Schema(
   {
     role: {
       type: String,
-      enum: ['director', 'assistant', 'parent'],
+      enum: ['director', 'parent'],
       required: true,
     },
     firstName: {
@@ -26,15 +27,13 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true,
       lowercase: true,
+      unique: true,
     },
-
     photo: {
       type: String,
       default: 'default.jpg',
     },
-
     password: {
       type: String,
       required: true,
@@ -48,6 +47,8 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+userSchema.plugin(uniqueValidator);
 
 userSchema.pre('save', async function (next) {
   // Only run this function if password was actually modified
@@ -112,4 +113,4 @@ userSchema.methods.createPasswordResetToken = function () {
 
 const UserModel = mongoose.model('User', userSchema);
 
-module.exports = { UserModel, userValidationSchema };
+module.exports = { UserModel, userSchema, userValidationSchema };
