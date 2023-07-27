@@ -32,14 +32,35 @@ const childSchema = new mongoose.Schema(
     alergies: {
       type: String,
     },
-    // attended: [{ type: mongoose.Schema.ObjectId, ref: 'Attendance' }],
-    // parent: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-    // kindergarten: [{ type: mongoose.Schema.ObjectId, ref: 'Kindergarden' }],
+    attended: { type: mongoose.Schema.ObjectId, ref: 'Attendance' },
+    parent: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    kindergarten: { type: mongoose.Schema.ObjectId, ref: 'Kindergarden' },
   },
   {
     timestamps: true,
   }
 );
+
+childSchema.pre(/^find/, function (next) {
+  if (this.options._recursed) {
+    return next();
+  }
+  this.populate({
+    path: 'parent kindergarten',
+    options: { _recursed: true },
+    select:
+      '-__v -passwordChangedAt -children -kindergarden -password -createdAt -updatedAt -director',
+  });
+  next();
+});
+
+childSchema.post('find', async function (docs) {
+  for (const doc of docs) {
+    if (doc.isPublic) {
+      await doc.populate('attended');
+    }
+  }
+});
 
 const ChildModel = mongoose.model('Child', childSchema);
 

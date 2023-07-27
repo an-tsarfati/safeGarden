@@ -42,6 +42,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
+    children: [{ type: mongoose.Schema.ObjectId, ref: 'Child' }],
+    kindergarden: [{ type: mongoose.Schema.ObjectId, ref: 'Kindergarden' }],
   },
   {
     timestamps: true,
@@ -69,10 +74,26 @@ userSchema.pre('save', function (next) {
   next();
 });
 
-userSchema.pre(/^find/, function (next) {
-  // this points to the current query
-  this.find({ active: { $ne: false } });
-  next();
+// userSchema.pre(/^find/, function (next) {
+//   if (this.options._recursed) {
+//     return next();
+//   }
+//   this.populate({
+//     path: 'kindergarden children',
+//     options: { _recursed: true },
+//     select: '-__v -passwordChangedAt',
+//   });
+//   next();
+// });
+
+userSchema.post(/^find/, async function (docs) {
+  for (const doc of docs) {
+    if (doc.role === 'parent') {
+      await doc.populate('children').execPopulate();
+    } else if (doc.role === 'teacher' || doc.role === 'director') {
+      await doc.populate('kindergarden').execPopulate();
+    }
+  }
 });
 
 userSchema.methods.correctPassword = async function (

@@ -4,7 +4,9 @@ async function deleteChild(query) {
   return ChildModel.deleteOne(query).lean();
 }
 async function readChild(query) {
-  return await ChildModel.findById(query);
+  return await ChildModel.findById(query)
+    .populate('parent') // Exclude password from parent details
+    .populate('kindergarten');
 }
 async function creatChild(input) {
   return await ChildModel.create(input);

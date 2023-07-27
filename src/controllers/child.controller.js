@@ -9,12 +9,17 @@ const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 
 exports.newChild = catchAsync(async (req, res, next) => {
-  const newUser = await creatChild(req.body);
+  const parentId = req.body.parentId;
+  const kindergardenId = req.body.kindergardenId;
+
+  const newChild = await creatChild(req.body);
+
+  const populatedChild = await readChild(newChild._id);
 
   res.status(201).json({
     status: 'success',
     data: {
-      data: newUser,
+      child: populatedChild,
     },
   });
 });
@@ -59,28 +64,6 @@ exports.updateChild = catchAsync(async (req, res, next) => {
     },
   });
 });
-
-// exports.getAllchildren = catchAsync(async (req, res, next) => {
-//   let filter = {};
-//   if (req.params.childClassId)
-//     filter = { childClassId: req.params.childClassId };
-
-//   const features = new APIFeatures(readAllChildren, req.query)
-//     .filter()
-//     .sort()
-//     .limitFields()
-//     .paginate();
-//   const doc = await features.query;
-
-//   // SEND RESPONSE
-//   res.status(200).json({
-//     status: 'success',
-//     results: doc.length,
-//     data: {
-//       data: doc,
-//     },
-//   });
-// });
 
 exports.getAllchildren = catchAsync(async (req, res, next) => {
   let filter = {};

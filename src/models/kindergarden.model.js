@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const kindergardenValidationSchema = require('../validations/kindergarden.validation');
-const UserModel = require('../models/user.model');
 
 const kindergardenSchema = new mongoose.Schema({
   kindergardenName: {
@@ -23,19 +22,19 @@ const kindergardenSchema = new mongoose.Schema({
     type: String,
     default: 'default.jpg',
   },
-  // staff: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   children: [{ type: mongoose.Schema.ObjectId, ref: 'Child' }],
+  director: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
 });
 
 kindergardenSchema.pre(/^find/, function (next) {
-  this.populate({ path: 'director', model: UserModel }); // Use UserModel as the reference
-
-  next();
-});
-
-kindergardenSchema.pre(/^find/, function (next) {
-  this.populate({ path: 'director', select: '-__v -passwordChangedAt' });
-
+  if (this.options._recursed) {
+    return next();
+  }
+  this.populate({
+    path: 'director children',
+    options: { _recursed: true },
+    select: '-__v -passwordChangedAt',
+  });
   next();
 });
 

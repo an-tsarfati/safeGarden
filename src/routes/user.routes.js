@@ -23,6 +23,8 @@ const {
   uploadImages,
   resizeImages,
 } = require('../middleware/uploadImg.middleware');
+const { getAllChildrenForParent } = require('../controllers/child.controller');
+
 const { request } = require('http');
 
 const router = express.Router();
