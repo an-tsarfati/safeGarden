@@ -86,15 +86,17 @@ userSchema.pre('save', function (next) {
 //   next();
 // });
 
-userSchema.post(/^find/, async function (docs) {
-  for (const doc of docs) {
-    if (doc.role === 'parent') {
-      await doc.populate('children').execPopulate();
-    } else if (doc.role === 'teacher' || doc.role === 'director') {
-      await doc.populate('kindergarden').execPopulate();
-    }
-  }
-});
+// userSchema.post(/^find/, async function (docs) {
+//   const populatePromises = docs.map(async (doc) => {
+//     if (doc.role === 'parent') {
+//       await doc.populate('children').execPopulate();
+//     } else if (doc.role === 'teacher' || doc.role === 'director') {
+//       await doc.populate('kindergarden').execPopulate();
+//     }
+//   });
+
+//   await Promise.all(populatePromises);
+// });
 
 userSchema.methods.correctPassword = async function (
   candidatePassword,
