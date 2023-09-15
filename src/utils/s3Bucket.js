@@ -1,4 +1,6 @@
 const AWS = require('aws-sdk');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
 require('aws-sdk/lib/maintenance_mode_message').suppress = true;
 const { accessKeyId, secretAccessKey, region } = require('../../config/aws');
 
@@ -28,4 +30,18 @@ async function createS3Bucket(bucketName) {
   }
 }
 
-module.exports = { createS3Bucket };
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'your-bucket-name', // Replace with your bucket name
+    acl: 'public-read', // Set the appropriate ACL for your use case
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      cb(null, Date.now().toString());
+    },
+  }),
+});
+
+module.exports = { createS3Bucket, upload };

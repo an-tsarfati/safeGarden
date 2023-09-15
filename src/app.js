@@ -13,7 +13,6 @@ const compression = require('compression');
 const http = require('http');
 
 dotenv.config();
-
 const port = config.port;
 const host = config.host;
 const protocol = config.protocol;
