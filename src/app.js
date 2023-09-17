@@ -66,6 +66,10 @@ app.use(
 
 app.use(cookieParser());
 
+app.get('api/welcome', (req, res) => {
+  res.status(200).send({ message: 'welcome to Safegarden!' });
+});
+
 app.use(bodyParser.json({ limit: '15mb' }));
 app.use(bodyParser.urlencoded({ limit: '15mb', extended: true }));
 

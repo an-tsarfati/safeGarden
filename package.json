@@ -18,7 +18,6 @@
     "braces": "^3.0.2",
     "bytes": "^3.1.2",
     "call-bind": "^1.0.2",
-    "chokidar": "^3.5.3",
     "compression": "^1.7.4",
     "concat-map": "^0.0.1",
     "content-disposition": "^0.5.4",
@@ -142,5 +141,8 @@
     "url": "https://github.com/an-tsarfati/safeGarden/issues"
   },
   "homepage": "https://github.com/an-tsarfati/safeGarden#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "chokidar": "^3.5.3"
+  }
 }
