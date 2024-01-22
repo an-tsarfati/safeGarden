@@ -12,6 +12,9 @@ const monitor = require('express-status-monitor');
 const compression = require('compression');
 const http = require('http');
 
+// Import the allowAccessMiddleware
+const allowAccessMiddleware = require('./middleware/core.middleware');
+
 dotenv.config();
 const port = config.port;
 const host = config.host;
@@ -51,10 +54,12 @@ wss.on('connection', (ws) => {
   });
 });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// app.user
+// Use the allowAccessMiddleware
+app.use(allowAccessMiddleware);
+
+// Other middleware setup
 app.use(compression());
-
 app.use(helmet());
-
 app.use(monitor());
 
 app.use(
@@ -65,10 +70,6 @@ app.use(
 );
 
 app.use(cookieParser());
-
-app.get('api/welcome', (req, res) => {
-  res.status(200).send({ message: 'welcome to Safegarden!' });
-});
 
 app.use(bodyParser.json({ limit: '15mb' }));
 app.use(bodyParser.urlencoded({ limit: '15mb', extended: true }));
