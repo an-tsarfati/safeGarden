@@ -3,7 +3,7 @@ const childValidationSchema = require('../validations/child.validation');
 
 const childSchema = new mongoose.Schema(
   {
-    lastName: {
+    firstName: {
       type: String,
       required: true,
     },

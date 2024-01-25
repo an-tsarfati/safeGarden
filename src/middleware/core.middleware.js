@@ -3,7 +3,7 @@
 const allowAccessMiddleware = (req, res, next) => {
   // Set the allowed origins
   const allowedOrigins = [
-    'http://safe-garden.vercel',
+    'http://safe-garden.vercel.app',
     'http://localhost:3000',
     'http://localhost:5071',
   ];
