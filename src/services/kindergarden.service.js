@@ -1,4 +1,5 @@
 const { KindergardenModel } = require('./../models/kindergarden.model');
+const APIFeatures = require('../utils/apiFeatures');
 
 async function findAndUpdateKindergarden(query, update, options) {
   return KindergardenModel.findByIdAndUpdate(query, update, options);
