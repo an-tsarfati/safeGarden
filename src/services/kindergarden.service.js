@@ -20,9 +20,22 @@ async function createKindergarden(input) {
   return await KindergardenModel.create(input);
 }
 
+async function readAllClasses(filter, query) {
+  const features = new APIFeatures(KindergardenModel.find(filter), query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+
+  const doc = await features.query;
+
+  return doc;
+}
+
 module.exports = {
   readKindergarden,
   deleteKindergarden,
   findAndUpdateKindergarden,
   createKindergarden,
+  readAllClasses,
 };

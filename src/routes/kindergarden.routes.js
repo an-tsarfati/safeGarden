@@ -6,6 +6,7 @@ const {
   getKindergarden,
   newKindergarden,
   updateKindergarden,
+  getAllClasses,
 } = require('./../controllers/kindergarden.controller');
 // const { restrictTo, protect } = require('./../controllers/auth.controller');
 const {
@@ -38,5 +39,7 @@ router.post('/:kindergardenId/:kidId/attendance', attendance);
 
 // Get all children attendance
 router.get('/:kindergardenId/attendance', attendance);
+
+router.route('/').get(getAllClasses);
 
 module.exports = router;

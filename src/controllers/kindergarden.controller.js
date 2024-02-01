@@ -3,6 +3,7 @@ const {
   deleteKindergarden,
   findAndUpdateKindergarden,
   readKindergarden,
+  readAllClasses,
 } = require('../services/kindergarden.service');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
@@ -52,6 +53,21 @@ exports.updateKindergarden = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
+    data: {
+      data: doc,
+    },
+  });
+});
+
+exports.getAllClasses = catchAsync(async (req, res, next) => {
+  let filter = {};
+  if (req.params.classId) filter = { class: req.params.classId };
+
+  const doc = await readAllClasses(filter, req.query);
+
+  res.status(200).json({
+    status: 'success',
+    results: doc.length,
     data: {
       data: doc,
     },
