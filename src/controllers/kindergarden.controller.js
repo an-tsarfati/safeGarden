@@ -9,12 +9,15 @@ const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 
 exports.newKindergarden = catchAsync(async (req, res, next) => {
+  const userId = req.body.userId;
+
   const doc = await createKindergarden(req.body);
+  const populateKindergarden = await readKindergarden(createKindergarden._id);
 
   res.status(201).json({
     status: 'success',
     data: {
-      data: doc,
+      data: populateKindergarden,
     },
   });
 });
