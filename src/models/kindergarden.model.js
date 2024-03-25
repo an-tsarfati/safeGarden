@@ -23,7 +23,7 @@ const kindergardenSchema = new mongoose.Schema({
     default: 'default.jpg',
   },
   children: [{ type: mongoose.Schema.ObjectId, ref: 'Child' }],
-  director: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  director: { type: mongoose.Schema.ObjectId, ref: 'User' },
 });
 
 kindergardenSchema.pre(/^find/, function (next) {
@@ -38,7 +38,7 @@ kindergardenSchema.pre(/^find/, function (next) {
   next();
 });
 
-const KindergardenModel = mongoose.model('Kindergarden', kindergardenSchema);
+KindergardenModel = mongoose.model('Kindergarden', kindergardenSchema);
 
 module.exports = {
   KindergardenModel,
