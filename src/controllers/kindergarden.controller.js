@@ -9,6 +9,8 @@ const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 
 exports.newKindergarden = catchAsync(async (req, res, next) => {
+  const childId = req.body.childId;
+
   const newKindergarden = await createKindergarden(req.body);
   const populateKindergarden = await readKindergarden(newKindergarden._id);
 

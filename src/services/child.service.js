@@ -14,7 +14,7 @@ async function creatChild(input) {
 async function findAndUpdateChild(query, update, options) {
   return ChildModel.findByIdAndUpdate(query, update, options);
 }
-async function readAllChildren() {
+async function readAllChildren(filter) {
   return ChildModel.find(filter);
 }
 

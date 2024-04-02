@@ -40,6 +40,7 @@ kindergardenSchema.pre(/^find/, function (next) {
 
 KindergardenModel = mongoose.model('Kindergarden', kindergardenSchema);
 
+
 module.exports = {
   KindergardenModel,
   kindergardenValidationSchema,
