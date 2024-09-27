@@ -12,8 +12,7 @@ const monitor = require('express-status-monitor');
 const compression = require('compression');
 const http = require('http');
 
-// Import the allowAccessMiddleware
-const allowAccessMiddleware = require('./middleware/core.middleware');
+
 
 dotenv.config();
 const port = config.port;
@@ -54,8 +53,7 @@ wss.on('connection', (ws) => {
   });
 });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// app.user
-// Use the allowAccessMiddleware
-app.use(allowAccessMiddleware);
+
 
 // Other middleware setup
 app.use(compression());
