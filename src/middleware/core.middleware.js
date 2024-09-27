@@ -9,7 +9,7 @@ const allowAccessMiddleware = (req, res, next) => {
   ];
 
   // Get the origin header from the request
-  const origin = req.headers.origin;
+  const origin = 'https://safe-garden.vercel.app/';
 
   // Check if the origin is in the allowed list
   if (allowedOrigins.includes(origin)) {

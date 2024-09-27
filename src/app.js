@@ -12,7 +12,8 @@ const monitor = require('express-status-monitor');
 const compression = require('compression');
 const http = require('http');
 
-
+// Import the allowAccessMiddleware
+const allowAccessMiddleware = require('./middleware/core.middleware');
 
 dotenv.config();
 const port = config.port;
@@ -53,23 +54,21 @@ wss.on('connection', (ws) => {
   });
 });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// app.user
-
+// Use the allowAccessMiddleware
+app.use(allowAccessMiddleware);
 
 // Other middleware setup
 app.use(compression());
 app.use(helmet());
 app.use(monitor());
 
-app.use(cors());
-app.use((req, res, next) => {
-  res.header('Acess-Control-Allow-Methods', '*');
-  res.header('Acess-Control-Allow-Headers', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
-  res.header(
-    'Acess-Control-Allow-Headers',
-    'Origin, X-Requested-with, Content-Type, Accept, Authorization'
-  );
-  next();
-});
+app.use(
+  cors({
+    origin: config.origin,
+    credentials: true,
+  })
+);
+
 app.use(cookieParser());
 
 app.use(bodyParser.json({ limit: '15mb' }));
