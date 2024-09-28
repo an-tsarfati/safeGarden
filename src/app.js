@@ -13,7 +13,7 @@ const compression = require('compression');
 const http = require('http');
 
 // Import the allowAccessMiddleware
-const allowAccessMiddleware = require('./middleware/core.middleware');
+//const allowAccessMiddleware = require('./middleware/core.middleware');
 
 dotenv.config();
 const port = config.port;
@@ -58,20 +58,20 @@ wss.on('connection', (ws) => {
 // app.use(allowAccessMiddleware);
 
 // Other middleware setup
-app.use(compression());
-app.use(helmet());
-app.use(monitor());
+// app.use(compression());
+// app.use(helmet());
+// app.use(monitor());
 
 app.use(cors());
-app.use((req, res, next) => {
-  res.header('Acess-Control-Allow-Methods', '*');
-  res.header('Acess-Control-Allow-Headers', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
-  res.header(
-    'Acess-Control-Allow-Headers',
-    'Origin, X-Request-With, Content-Type, Accept, Authorization'
-  );
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header('Acess-Control-Allow-Methods', '*');
+//   res.header('Acess-Control-Allow-Headers', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
+//   res.header(
+//     'Acess-Control-Allow-Headers',
+//     'Origin, X-Request-With, Content-Type, Accept, Authorization'
+//   );
+//   next();
+// });
 
 app.use(cookieParser());
 
