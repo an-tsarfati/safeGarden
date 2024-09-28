@@ -64,18 +64,21 @@ wss.on('connection', (ws) => {
 
 app.use(
   cors({
-    origin: '*',
+    origin: 'https://safe-garden.vercel.app',
+    credentials: true,
   })
 );
-app.use((req, res, next) => {
-  res.header('Acess-Control-Allow-Methods', '*');
-  res.header('Acess-Control-Allow-Headers', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
-  res.header(
-    'Acess-Control-Allow-Headers',
-    'Origin, X-Request-With, Content-Type, Accept, Authorization'
-  );
-  next();
-});
+
+app.options('*', cors());
+// app.use((req, res, next) => {
+//   res.header('Acess-Control-Allow-Methods', '*');
+//   res.header('Acess-Control-Allow-Headers', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
+//   res.header(
+//     'Acess-Control-Allow-Headers',
+//     'Origin, X-Request-With, Content-Type, Accept, Authorization'
+//   );
+//   next();
+// });
 
 app.use(cookieParser());
 
