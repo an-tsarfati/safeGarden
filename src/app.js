@@ -55,19 +55,23 @@ wss.on('connection', (ws) => {
 });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// app.user
 // Use the allowAccessMiddleware
-app.use(allowAccessMiddleware);
+// app.use(allowAccessMiddleware);
 
 // Other middleware setup
 app.use(compression());
 app.use(helmet());
 app.use(monitor());
 
-app.use(
-  cors({
-    origin: config.origin,
-    credentials: true,
-  })
-);
+app.use(cors());
+app.use((req, res, next) => {
+  res.header('Acess-Control-Allow-Methods', '*');
+  res.header('Acess-Control-Allow-Headers', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
+  res.header(
+    'Acess-Control-Allow-Headers',
+    'Origin, X-Request-With, Content-Type, Accept, Authorization'
+  );
+  next();
+});
 
 app.use(cookieParser());
 
